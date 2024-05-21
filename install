@@ -1,0 +1,156 @@
+hostნame დაყენება
+nano /etc/hostname
+
+(wp.sangu.edu.ge)
+
+ჰოსტ ფაილის რედაქტირება
+nano /etc/hosts
+
+
+##############################################
+127.0.0.1	localhost
+127.0.1.1 	wp.sangu.edu.ge wordpress
+###############################################
+
+იუზერის დამატება
+adduser kakha
+შევავსოთ პაროლი და სხვა ინფორმაცია
+
+################################################
+გავხადოთ ეს იუზეერი სუდოერი
+
+sudo usermod -aG sudo kakha
+
+(-aG ნიშნავს add to Group)
+
+შევამოწმოთ
+groups kakha
+
+##############################################
+
+დავაყენოთ sec აპდეიტები
+
+apt update && apt dist-upgrade
+################################################
+
+
+reboot
+
+ssh kakha@68.183.216.77
+
+###############################################
+
+დავაყენოთ ვებსერვერი
+sudo apt install apache2
+
+systemctl status apache2
+#################################################
+
+დავაყენოთ ბაზა
+
+sudo apt install mariadb-server
+sudo mariadb
+
+შევამოწმოთ ბაზები
+SHOW DATABASES;
+
+CREATE DATABASE wp DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+GRANT ALL PRIVILEGES ON wp.* TO wp_user@localhost IDENTIFIED BY '#Sangu1234';
+FLUSH PRIVILEGES;
+EXIT;
+
+#########################################################
+
+
+დავაყენოთ SQL სერვერის დაცვის მექანიზმი
+sudo mysql_secure_installation
+შევიტანოთ რუთის პაროლი
+n
+Y
+შევიტანოთ რუთის პაროლი
+
+n
+Y
+Y
+Y
+############################################################
+დავქაჩოჩ wordpress
+
+wget https://wordpress.org/latest.zip
+ls
+command -v unzip
+თუ ცარიელია აუტი, დავაყენოთ unzip
+sudo apt install unzip
+
+გავხსნატ არქივი
+unzip latest.zip 
+წავშალოტ არქივირებული ფაილი
+rm latest.zip
+
+შევცვალოს ოუნერი და დავამატოტ www-data
+sudo chown -R www-data:www-data wordpress
+ls -l
+sudo mv wordpress /var/www/
+
+
+########################################################
+შევქმნათ აპაცჰის კონფიგურაციის ფაილი
+
+sudo nano /etc/apache2/sites-available/wordpress.conf
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/wordpress
+	<Directory /var/www/wordpress>
+		Options FollowSymLinks
+		AllowOverride Limit Options FileInfo
+		DirectoryIndex index.php
+		Require all granted
+	</Directory>
+	<Directory /var/www/wordpress/pw-content>
+		Options FollowSymLinks
+		Require all granted
+	</Directory>
+</VirtualHost>
+
+
+
+გავააქტიუროთ დეფაულტ საიტი ( ანუ ჩვენს  შემთხვევაში wordpress)
+
+sudo a2ensite wordpress.conf
+service apache2 restart
+უნდა გვქონდეს აუტი
+
+წავშალოთ არსებუი დეფაულტ საიტი
+
+sudo a2dissite 000-default.conf
+უნდა გვქონდეს აუტი
+
+ყოველშემთხვევისთვის დავაყენოთ პჰპმყადმინი და საჭირო ბიბლიოთეკა
+sudo apt install libapache2-mod-php php-curl php-gd php-intl php-mbstring php-mysql php-soap php-xml php-xmlrpc php-zip
+
+გავააქტიუროდ რევრაიტ მოდი
+sudo a2enmod rewrite
+ 
+sudo systemctl restart apache2
+
+
+საჭირო დამატებითი პაკეტების ინსტალაცია
+sudo snap install core; sudo snap refresh core
+sudo snap install --classic certbot
+ 
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+
+sudo certbot --apache
+
+Y
+N
+
+შევიტანოთ დომენური სახელი
+
+
+
+
+
+
