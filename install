@@ -1,7 +1,7 @@
-hostნame დაყენება
+hostname დაყენება
 nano /etc/hostname
 
-(wp.sangu.edu.ge)
+(test.netacademy.ge)
 
 ჰოსტ ფაილის რედაქტირება
 nano /etc/hosts
@@ -9,7 +9,7 @@ nano /etc/hosts
 
 ##############################################
 127.0.0.1	localhost
-127.0.1.1 	wp.sangu.edu.ge wordpress
+127.0.1.1 	test.netacademy.ge wordpress
 ###############################################
 
 იუზერის დამატება
@@ -28,7 +28,7 @@ groups kakha
 
 ##############################################
 
-დავაყენოთ sec აპდეიტები
+დავაყენოთ აპდეიტები
 
 apt update && apt dist-upgrade
 ################################################
@@ -122,12 +122,12 @@ sudo a2ensite wordpress.conf
 service apache2 restart
 უნდა გვქონდეს აუტი
 
-წავშალოთ არსებუი დეფაულტ საიტი
+წავშალოთ არსებუlი დეფაულტ საიტი
 
 sudo a2dissite 000-default.conf
 უნდა გვქონდეს აუტი
 
-ყოველშემთხვევისთვის დავაყენოთ პჰპმყადმინი და საჭირო ბიბლიოთეკა
+ყოველი შემთხვევისთვის დავაყენოთ phpmyadmin და საჭირო ბიბლიოთეკა
 sudo apt install libapache2-mod-php php-curl php-gd php-intl php-mbstring php-mysql php-soap php-xml php-xmlrpc php-zip
 
 გავააქტიუროდ რევრაიტ მოდი
